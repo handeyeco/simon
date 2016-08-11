@@ -1,0 +1,120 @@
+body, html {
+  padding: 0;
+  margin: 0;
+  background: grey;
+}
+
+/* MENU BTN */
+/* MENU BTN */
+/* MENU BTN */
+
+.menu-btn {
+  position: absolute;
+  width: 3em;
+  height: 3em;
+  left: 1em;
+  top: 0;
+  background: white;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  z-index: 1000;
+}
+
+.menu-icon {
+  position: relative;
+  width: 2em;
+  height: 0.5em;
+  background-color: #4385F5;
+  border-radius: 3px;
+  margin: 0.5em auto;
+  box-shadow: 0 0.75em #4385F5, 0 1.5em #4385F5;
+}
+
+/* GAME */
+/* GAME */
+/* GAME */
+
+.color-btn {
+  position: absolute;
+  z-index: 0;
+}
+
+.green-btn {
+  top: 0;
+  right: 50%;
+  bottom: 50%;
+  left: 0;
+  background: #109D59;
+}
+
+.red-btn {
+  top: 0;
+  right: 0;
+  bottom: 50%;
+  left: 50%;
+  background: #DC4437;
+}
+
+.yellow-btn {
+  top: 50%;
+  right: 50%;
+  bottom: 0;
+  left: 0;
+  background: #F5B400;
+}
+
+.blue-btn {
+  top: 50%;
+  right: 0;
+  bottom: 0;
+  left: 50%;
+  background: #4385F5;
+}
+
+.score-board {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -4em;
+  margin-left: -4em;
+  height: 8em;
+  width: 8em;
+  border-radius: 50%;
+  background: white;
+}
+
+/* PLAY BTN */
+/* PLAY BTN */
+/* PLAY BTN */
+
+.play-btn {
+  position: absolute;
+  width: 3em;
+  height: 3em;
+  right: 1em;
+  bottom: 0;
+  background: white;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  z-index: 1000;
+}
+
+.play-icon {
+  position: relative;
+  width: 0;
+  height: 0;
+  border-top: 0.75em solid transparent;
+  border-bottom: 0.75em solid transparent;
+  border-left: 1em solid #109D59;
+  margin: 0.75em 1em;
+}
+
+.pause-icon {
+  position: relative;
+  height: 2em;
+  width: 0.5em;
+  background: #DC4437;
+  border-radius: 3px;
+  box-shadow: 0.75em 0 #DC4437;
+  margin: 0.5em 0.9em;
+}
