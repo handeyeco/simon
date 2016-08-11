@@ -1,1 +1,5 @@
-console.log("Main.js");
+$(function () {
+  $('.color-btn').hover(function () {
+    $(this).addClass('active');
+  });
+});
