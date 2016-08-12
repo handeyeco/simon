@@ -61,7 +61,7 @@ body, html {
 
 .menu .active {
   background: #4385F5;
-  color: black;
+  color: white;
 }
 
 .reset-btn {
@@ -147,10 +147,16 @@ body, html {
 }
 
 .score {
+  /*border: 1px solid blue;*/
+  position: relative;
+  width: 100%;
+  top: 50%;
+  left: 50%;
+  margin-top: -0.6em;
+  margin-left: -0.8em;
   font-weight: bold;
   font-size: 5em;
   color: grey;
-  margin-top: 0.2em;
 }
 
 /* PLAY BTN */

@@ -12,26 +12,31 @@ $(function () {
       winner        = $('.winner');
 
   // State
-  var state = {
-    // Sctrict mode boolean
-    strict: false,
-    // Status: "playback", "recording", "waiting", "paused"
-    status: "waiting",
-    // Array of computer moves
-    playback: [],
-    playbackCounter: 0,
-    // Array of user moves
-    userInput: [],
-    audio: {
-      green: new Audio('simon-green.mp3'),
-      red: new Audio('simon-red.mp3'),
-      yellow: new Audio('simon-yellow.mp3'),
-      blue: new Audio('simon-blue.mp3'),
-      error: new Audio('simon-error.mp3'),
-      win: new Audio('simon-win.mp3')
-    },
-    timeouts: []
-  };
+  var returnInitialState = function () {
+    return {
+      // Strict mode boolean
+      strict: false,
+      // Status: "playback", "recording", "waiting", "paused"
+      status: "waiting",
+      // Array of computer moves
+      playback: [],
+      playbackCounter: 0,
+      // Array of user moves
+      userInput: [],
+      timeouts: []
+    };
+  }
+
+  var state = returnInitialState();
+
+  var audio = {
+    green: new Audio('http://simon.matthewbryancurtis.com/simon-green.mp3'),
+    red: new Audio('http://simon.matthewbryancurtis.com/simon-red.mp3'),
+    yellow: new Audio('http://simon.matthewbryancurtis.com/simon-yellow.mp3'),
+    blue: new Audio('http://simon.matthewbryancurtis.com/simon-blue.mp3'),
+    error: new Audio('http://simon.matthewbryancurtis.com/simon-error.mp3'),
+    win: new Audio('http://simon.matthewbryancurtis.com/simon-win.mp3')
+  }
 
   /* =========================== */
   /* =========================== */
@@ -50,7 +55,7 @@ $(function () {
 
   function clearGameTimeouts () {
     state.timeouts.forEach(function (elem) {
-      window.clearTimout(elem);
+      window.clearTimeout(elem);
     });
 
     state.timeouts = [];
@@ -62,7 +67,9 @@ $(function () {
   /* =========================== */
   /* =========================== */
   $(menuButton).click(function () {
-    pauseGame();
+    if (state.status === "playback" || state.status === "recording") {
+      pauseGame();
+    }
     updateStatusIcon();
     $(menu).fadeToggle();
   });
@@ -72,13 +79,21 @@ $(function () {
     resetGame();
   });
 
+  $(strictButton).click(function () {
+    $(this).toggleClass('active');
+    state.strict = !state.strict;
+  })
+
   function resetGame() {
     clearGameTimeouts();
 
-    state.status = "waiting";
-    state.playback = [];
-    state.playbackCounter = 0;
-    state.userInput = [];
+    var strict = state.strict || false;
+
+    state = returnInitialState();
+
+    state.strict = strict;
+
+    console.log(state.status);
 
     $(colorButtons).removeClass('active');
 
@@ -112,6 +127,8 @@ $(function () {
     } else {
       pauseGame();
     }
+
+    updateStatusIcon();
   }
 
   $(playButton).click(handlePlayButtonClick);
@@ -123,73 +140,71 @@ $(function () {
   /* =========================== */
   function startRound() {
     if (state.playback.length === 20) {
-      state.audio.win.play();
+      audio.win.play();
       $(winner).addClass('active');
     } else {
       $(winner).removeClass('active');
     }
 
-    window.setTimeout(function () {
+    state.timeouts.push(window.setTimeout(function () {
       state.playbackCounter = 0;
       addRound();
       playback();
       updateStatusIcon();
-    }, 600);
+    }, 600));
 
   }
 
   function playback() {
     state.status = "playback";
-    console.log(state.status);
     $(colorButtons).removeClass('active');
 
     var color = state.playback[state.playbackCounter],
         current = "#" + color;
 
     $(current).addClass('active');
-    state.audio[color].play();
+    audio[color].play();
 
     state.playbackCounter += 1;
 
     if (state.playback.length > state.playbackCounter) {
-      window.setTimeout(playback, 1000);
+      state.timeouts.push(window.setTimeout(playback, 1000));
     } else {
-      window.setTimeout(startRecording, 1000);
+      state.timeouts.push(window.setTimeout(startRecording, 1000));
     }
   }
 
   function startRecording() {
     state.status = "recording";
     state.userInput = [];
-    console.log(state.status);
     $(colorButtons).removeClass('active');
   }
 
   function handleColorButtonClick(event) {
     $(colorButtons).removeClass('active');
 
-    if (state.status !== "recording") {
+    if (state.status !== "recording" || state.userInput >= state.playback) {
       return;
     }
 
     var color = event.target.id;
 
-    state.audio[color].play();
+    audio[color].play();
     state.userInput.push(color);
 
     if (arrayEqual(state.userInput, state.playback)) {
-      window.setTimeout(startRound, 1000);
+      state.timeouts.push(window.setTimeout(startRound, 1000));
     } else {
       var position = state.userInput.length - 1;
 
       if (state.playback[position] !== state.userInput[position]) {
-        window.setTimeout(handleError, 1000);
+        state.timeouts.push(window.setTimeout(handleError, 1000));
       }
     }
   }
 
   function handleError() {
-    state.audio.error.play();
+    audio.error.play();
 
     state.playbackCounter = 0;
     $(loser).addClass('active');
@@ -198,9 +213,9 @@ $(function () {
     }, 6000);
 
     if (state.strict) {
-      window.setTimeout(resetGame, 1000);
+      state.timeouts.push(window.setTimeout(resetGame, 1000));
     } else {
-      window.setTimeout(playback, 1000);
+      state.timeouts.push(window.setTimeout(playback, 1000));
     }
   }
 
