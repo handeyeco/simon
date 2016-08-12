@@ -157,16 +157,35 @@ body, html {
 /* PLAY BTN */
 /* PLAY BTN */
 
-.play-btn {
+.winner, .loser, .play-btn {
+  z-index: 800;
   position: absolute;
+  background: white;
+}
+
+.play-btn {
   width: 3em;
   height: 3em;
   right: 1em;
   bottom: 0;
-  background: white;
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  z-index: 800;
+}
+
+/* Banners */
+/* Banners */
+/* Banners */
+
+.winner, .loser {
+  top: 1em;
+  right: -15em;
+  padding: 1em 1.5em;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
+}
+
+.winner.active, .loser.active {
+  animation: 6s alternate message;
 }
 
 .play-icon {
@@ -187,4 +206,15 @@ body, html {
   border-radius: 3px;
   box-shadow: 0.8em 0 #DC4437;
   margin: 0.5em 0.9em;
+}
+
+/* Animations */
+/* Animations */
+/* Animations */
+
+@keyframes message {
+  0% { right: -15em; }
+  20% { right: 0; }
+  80% { right: 0; }
+  100% { right: -15em; }
 }
